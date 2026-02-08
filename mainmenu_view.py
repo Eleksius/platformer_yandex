@@ -9,7 +9,6 @@ class MainMenuView(arcade.View):
         super().__init__()
 
     def on_show_view(self):
-        """Вызывается, когда представление показывается"""
         arcade.set_background_color(arcade.csscolor.SKY_BLUE)
 
     def on_draw(self):
