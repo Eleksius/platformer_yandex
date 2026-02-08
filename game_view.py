@@ -2,7 +2,7 @@ import arcade
 from constants import *
 
 
-class GameView(arcade.View):  # Новый класс для игрового процесса
+class GameView(arcade.View):
 
     def __init__(self):
         super().__init__()
@@ -71,13 +71,12 @@ class GameView(arcade.View):  # Новый класс для игрового п
         if "spikes" in self.tile_map.sprite_lists:
             self.scene.add_sprite_list("spikes", sprite_list=self.tile_map.sprite_lists["spikes"])
 
-        # Keep track of the score
         if reset_coins:
             self.score = 0
         self.collected_coins = 0
         self.all_coins = len(self.scene["Coins"])
 
-        # Set up the player with animated sprite
+        # Создание персонажа
         from player_character import PlayerCharacter
         self.player_sprite = PlayerCharacter()
         self.player_sprite.center_x = 128
@@ -105,7 +104,6 @@ class GameView(arcade.View):  # Новый класс для игрового п
         self.gui_camera.use()
 
 
-        # Draw our score on the screen, scrolling it with the viewport
         score_text = f"Score: {self.score}"
         arcade.draw_text(
             score_text,
