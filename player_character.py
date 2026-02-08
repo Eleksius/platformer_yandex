@@ -46,25 +46,24 @@ class PlayerCharacter(arcade.Sprite):
         elif self.change_x > 0 and self.facing_direction == LEFT_FACING:
             self.facing_direction = RIGHT_FACING
 
-        # Check if moving horizontally
+        # Проверка движения горизонтально
         is_moving = abs(self.change_x) > 0
-        # Check if jumping or falling
+        # Проверка прыжка / падения
         is_jumping_or_falling = self.change_y != 0
 
-        # Handle animations based on state
         if is_jumping_or_falling:
-            # Jumping animation
+            # Прыжок
             if self.change_y > 0:
                 self.texture = self.jump_texture_pair[self.facing_direction]
-            # Falling animation
+            # Падение
             elif self.change_y < 0:
                 self.texture = self.fall_texture_pair[self.facing_direction]
         elif is_moving:
-            # Walking animation
+            # Ходьба
             self.cur_texture += 1
             if self.cur_texture >= len(self.walk_textures):
                 self.cur_texture = 0
             self.texture = self.walk_textures[self.cur_texture][self.facing_direction]
         else:
-            # Idle animation
+            # Дефолт
             self.texture = self.idle_texture_pair[self.facing_direction]
