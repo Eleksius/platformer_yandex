@@ -1,6 +1,6 @@
 import arcade
 
-class EndScreen(arcade.View):
+class WinScreen(arcade.View):
     def __init__(self, points):
         super().__init__()
         self.points = points
@@ -14,7 +14,7 @@ class EndScreen(arcade.View):
 
         # Заголовок игры
         arcade.draw_text(
-            "Игра окончена",
+            "Игра пройдена",
             self.window.width / 2,
             self.window.height / 2 + 100,
             arcade.color.WHITE,
@@ -41,10 +41,6 @@ class EndScreen(arcade.View):
                     file.write(str(self.points))
             else:
                 file.write(str(self.points))
-
-
-        with open("last_score.txt", "w") as file:
-            file.write(str(self.points))
 
 
         arcade.draw_text(

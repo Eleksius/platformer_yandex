@@ -11,13 +11,13 @@ class GameView(arcade.View):  # Новый класс для игрового п
 
         self.scene = None
 
-        self.level = 2
+        self.level = 1
 
         self.all_coins = None
 
         self.collected_coins = 0
 
-        self.hp = 3
+        self.hp = 5
 
         self.player_sprite = None
 
@@ -29,12 +29,19 @@ class GameView(arcade.View):  # Новый класс для игрового п
 
         self.score = 0
 
+        self.player_music = None
+
         self.collect_coin_sound = arcade.load_sound(":resources:sounds/coin1.wav")
         self.jump_sound = arcade.load_sound(":resources:sounds/jump1.wav")
         self.spike_sound = arcade.load_sound(":resources:sounds/gameover3.wav")
         self.end_sound = arcade.load_sound(":resources:sounds/gameover1.wav")
         self.background = arcade.load_texture("backgrounds/bg2.png")
         self.mega_sound = arcade.load_sound(":resources:sounds/coin3.wav")
+        self.music_hame = arcade.load_sound(":resources:music/1918.mp3")
+
+        if self.player_music:
+            arcade.stop_sound(self.player_music)
+        self.player_music = arcade.play_sound(self.music_hame, volume=0.3)
 
     def setup(self, reset_coins=True):
 
@@ -137,7 +144,7 @@ class GameView(arcade.View):  # Новый класс для игрового п
 
     def on_key_press(self, key, modifiers):
 
-        if key == arcade.key.UP or key == arcade.key.W:
+        if key == arcade.key.UP or key == arcade.key.W or key == arcade.key.SPACE:
             if self.physics_engine.can_jump():
                 self.player_sprite.change_y = PLAYER_JUMP_SPEED
                 arcade.play_sound(self.jump_sound)
@@ -187,7 +194,11 @@ class GameView(arcade.View):  # Новый класс для игрового п
             self.collected_coins += 1
             if len(self.scene["Coins"]) == 0:
                 self.level += 1
-                self.setup(reset_coins=False)
+                if self.level == 4:
+                    from win_screen import WinScreen
+                    self.window.show_view(WinScreen(self.score))
+                else:
+                    self.setup(reset_coins=False)
 
         # Проверка столкновения с шипами
         spike_hit_list = arcade.check_for_collision_with_list(
@@ -196,6 +207,10 @@ class GameView(arcade.View):  # Новый класс для игрового п
 
         mega_hit_list = arcade.check_for_collision_with_list(
             self.player_sprite, self.scene["mega"]
+        )
+
+        super_hit_list = arcade.check_for_collision_with_list(
+            self.player_sprite, self.scene["super"]
         )
 
         if spike_hit_list:
@@ -208,6 +223,12 @@ class GameView(arcade.View):  # Новый класс для игрового п
                 mega.remove_from_sprite_lists()
             self.player_sprite.center_y = 128
             self.player_sprite.center_x = 128
+            arcade.play_sound(self.mega_sound)
+
+        if super_hit_list:
+            self.score += 10
+            for s in super_hit_list:
+                s.remove_from_sprite_lists()
             arcade.play_sound(self.mega_sound)
 
         # Центрирование камеры

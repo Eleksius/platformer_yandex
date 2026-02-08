@@ -1,6 +1,7 @@
 import arcade
 from game_view import GameView
 
+
 class MainMenuView(arcade.View):
     """Главное меню игры"""
 
@@ -27,17 +28,37 @@ class MainMenuView(arcade.View):
         )
 
         # Заголовок игры
-        with open("best_score.txt", 'r') as file:
-            best_score = file.read()
-            arcade.draw_text(
-                f"Best_score: {best_score}",
-                100,
-                620,
-                arcade.color.WHITE,
-                font_size=20,
-                anchor_x="center",
-                anchor_y="center"
-            )
+        try:
+            with open("best_score.txt", 'r') as file:
+                best_score = file.read()
+        except FileNotFoundError:
+            best_score = 0
+
+        arcade.draw_text(
+            f"Best_score: {best_score}",
+            10,
+            620,
+            arcade.color.WHITE,
+            font_size=20,
+            anchor_x="left",
+            anchor_y="center"
+        )
+
+        try:
+            with open("last_score.txt", 'r') as file:
+                last_score = file.read()
+        except FileNotFoundError:
+            last_score = 0
+
+        arcade.draw_text(
+            f"Last score: {last_score}",
+            10,
+            590,
+            arcade.color.WHITE,
+            font_size=20,
+            anchor_x="left",
+            anchor_y="center"
+        )
 
         # Кнопка "Играть"
         arcade.draw_rectangle_outline(
