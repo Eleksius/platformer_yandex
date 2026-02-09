@@ -1,6 +1,7 @@
 import arcade
 from constants import *
 
+
 class PlayerCharacter(arcade.Sprite):
     """Персонаж с анимацией"""
 

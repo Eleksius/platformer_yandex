@@ -1,5 +1,6 @@
 import arcade
 
+
 class EndScreen(arcade.View):
     def __init__(self, points):
         super().__init__()
@@ -33,7 +34,7 @@ class EndScreen(arcade.View):
             anchor_y="center"
         )
 
-        with open("best_score.txt", "r+") as  file:
+        with open("best_score.txt", "r+") as file:
             text = file.read()
             if text:
                 if self.points > int(text):
@@ -42,10 +43,8 @@ class EndScreen(arcade.View):
             else:
                 file.write(str(self.points))
 
-
         with open("last_score.txt", "w") as file:
             file.write(str(self.points))
-
 
         arcade.draw_text(
             f"нажмите ENTER для возврата в меню",

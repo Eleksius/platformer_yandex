@@ -1,6 +1,7 @@
 import arcade
 from constants import *
 
+
 class GameView(arcade.View):
 
     def __init__(self):
@@ -53,7 +54,6 @@ class GameView(arcade.View):
         self.camera = arcade.Camera(self.window.width, self.window.height)
         self.gui_camera = arcade.Camera(self.window.width, self.window.height)
 
-
         layer_options = {
 
             "Platforms": {
@@ -93,7 +93,7 @@ class GameView(arcade.View):
         spawn_sprite.remove_from_sprite_lists()
         self.scene.add_sprite("Player", self.player_sprite)
 
-        #arcade.set_background_color(arcade.csscolor.CORNFLOWER_BLUE)
+        # arcade.set_background_color(arcade.csscolor.CORNFLOWER_BLUE)
         arcade.set_background_color(self.tile_map.background_color)
 
         self.physics_engine = arcade.PhysicsEnginePlatformer(
@@ -117,8 +117,6 @@ class GameView(arcade.View):
             e.draw()
 
         self.gui_camera.use()
-
-
 
         score_text = f"Score: {self.score}"
         arcade.draw_text(
@@ -155,7 +153,6 @@ class GameView(arcade.View):
             arcade.csscolor.RED,
             18,
         )
-
 
     def on_key_press(self, key, modifiers):
 

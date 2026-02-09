@@ -1,5 +1,6 @@
 import arcade
 
+
 class WinScreen(arcade.View):
     def __init__(self, points):
         super().__init__()
@@ -33,7 +34,7 @@ class WinScreen(arcade.View):
             anchor_y="center"
         )
 
-        with open("best_score.txt", "r+") as  file:
+        with open("best_score.txt", "r+") as file:
             text = file.read()
             if text:
                 if self.points > int(text):
@@ -41,7 +42,6 @@ class WinScreen(arcade.View):
                     file.write(str(self.points))
             else:
                 file.write(str(self.points))
-
 
         arcade.draw_text(
             f"нажмите ENTER для возврата в меню",
