@@ -96,7 +96,7 @@ class MainMenuView(arcade.View):
         )
 
     def on_mouse_press(self, x, y, button, modifiers):
-        """Обработка нажатия мыши"""
+        """Обработка нажатия мыши."""
         # Проверяем, была ли нажата кнопка "Играть"
         if (self.window.width / 2 - 100 < x < self.window.width / 2 + 100 and
                 self.window.height / 2 - 25 < y < self.window.height / 2 + 25):
