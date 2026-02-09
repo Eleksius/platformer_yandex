@@ -1,8 +1,5 @@
 import arcade
-from pyglet.sprite import Sprite
-
 from constants import *
-
 
 class GameView(arcade.View):
 
@@ -13,7 +10,9 @@ class GameView(arcade.View):
 
         self.scene = None
 
-        self.level = 3
+        self.emitters = []
+
+        self.level = 1
 
         self.all_coins = None
 
@@ -113,7 +112,12 @@ class GameView(arcade.View):
 
         self.camera.use()
         self.scene.draw()
+
+        for e in self.emitters:
+            e.draw()
+
         self.gui_camera.use()
+
 
 
         score_text = f"Score: {self.score}"
@@ -152,12 +156,26 @@ class GameView(arcade.View):
             18,
         )
 
+
     def on_key_press(self, key, modifiers):
 
         if key == arcade.key.UP or key == arcade.key.W or key == arcade.key.SPACE:
             if self.physics_engine.can_jump():
                 self.player_sprite.change_y = PLAYER_JUMP_SPEED
                 arcade.play_sound(self.jump_sound)
+
+                # --- ЭФФЕКТ ЧАСТИЦ ---
+                e = arcade.Emitter(
+                    center_xy=(self.player_sprite.center_x, self.player_sprite.bottom),
+                    emit_controller=arcade.EmitBurst(15),  # 15 частиц за раз
+                    particle_factory=lambda emitter: arcade.FadeParticle(
+                        filename_or_texture=arcade.make_circle_texture(4, arcade.color.WHITE_SMOKE),
+                        change_xy=arcade.rand_in_circle((0, 0), 2),
+                        lifetime=0.5,
+                        mutation_callback=None
+                    )
+                )
+                self.emitters.append(e)
         elif key == arcade.key.LEFT or key == arcade.key.A:
             self.player_sprite.change_x = -PLAYER_MOVEMENT_SPEED
         elif key == arcade.key.RIGHT or key == arcade.key.D:
@@ -188,6 +206,11 @@ class GameView(arcade.View):
 
         self.physics_engine.update()
 
+        for e in self.emitters:
+            e.update()
+
+        self.emitters = [e for e in self.emitters if not e.can_reap()]
+
         # Обновление анимации
         self.player_sprite.update_animation(delta_time)
 
@@ -202,6 +225,18 @@ class GameView(arcade.View):
             arcade.play_sound(self.collect_coin_sound)
             self.score += 1
             self.collected_coins += 1
+
+            e = arcade.Emitter(
+                center_xy=coin.position,  # Позиция монеты
+                emit_controller=arcade.EmitBurst(100),  # 10 искр
+                particle_factory=lambda emitter: arcade.FadeParticle(
+                    filename_or_texture=arcade.make_circle_texture(3, arcade.color.GOLD),
+                    change_xy=arcade.rand_in_circle((0, 0), 4),
+                    lifetime=0.6
+                )
+            )
+            self.emitters.append(e)
+
             if len(self.scene["Coins"]) == 0:
                 self.level += 1
                 if self.level == 4:
