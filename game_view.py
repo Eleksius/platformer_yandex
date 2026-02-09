@@ -1,4 +1,6 @@
 import arcade
+from pyglet.sprite import Sprite
+
 from constants import *
 
 
@@ -11,13 +13,17 @@ class GameView(arcade.View):
 
         self.scene = None
 
-        self.level = 1
+        self.level = 3
 
         self.all_coins = None
 
         self.collected_coins = 0
 
         self.hp = 5
+
+        self.spawn_x = None
+
+        self.spawn_y = None
 
         self.player_sprite = None
 
@@ -48,7 +54,6 @@ class GameView(arcade.View):
         self.camera = arcade.Camera(self.window.width, self.window.height)
         self.gui_camera = arcade.Camera(self.window.width, self.window.height)
 
-        map_name = "maps/map1.tmx"
 
         layer_options = {
 
@@ -79,11 +84,18 @@ class GameView(arcade.View):
         # Создание персонажа
         from player_character import PlayerCharacter
         self.player_sprite = PlayerCharacter()
-        self.player_sprite.center_x = 128
-        self.player_sprite.center_y = 128
+        spawn_sprite = self.scene['spawn'][0]
+
+        self.spawn_x = spawn_sprite.center_x
+        self.spawn_y = spawn_sprite.center_y
+
+        self.player_sprite.center_x = self.spawn_x
+        self.player_sprite.center_y = self.spawn_y
+        spawn_sprite.remove_from_sprite_lists()
         self.scene.add_sprite("Player", self.player_sprite)
 
-        arcade.set_background_color(arcade.csscolor.CORNFLOWER_BLUE)
+        #arcade.set_background_color(arcade.csscolor.CORNFLOWER_BLUE)
+        arcade.set_background_color(self.tile_map.background_color)
 
         self.physics_engine = arcade.PhysicsEnginePlatformer(
 
@@ -194,6 +206,7 @@ class GameView(arcade.View):
                 self.level += 1
                 if self.level == 4:
                     from win_screen import WinScreen
+                    arcade.stop_sound(self.player_music)
                     self.window.show_view(WinScreen(self.score))
                 else:
                     self.setup(reset_coins=False)
@@ -241,6 +254,6 @@ class GameView(arcade.View):
             self.window.show_view(EndScreen(self.score))
         else:
             arcade.play_sound(self.spike_sound)
-            self.player_sprite.center_x = 128
-            self.player_sprite.center_y = 128
+            self.player_sprite.center_x = self.spawn_x
+            self.player_sprite.center_y = self.spawn_y
             # self.setup(reset_coins=True)

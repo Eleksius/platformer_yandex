@@ -6,7 +6,7 @@ class EndScreen(arcade.View):
         self.points = points
 
     def on_show_view(self):
-        arcade.set_background_color(arcade.csscolor.SKY_BLUE)
+        arcade.set_background_color(arcade.csscolor.GREEN)
 
     def on_draw(self):
         """Отрисовка главного меню"""

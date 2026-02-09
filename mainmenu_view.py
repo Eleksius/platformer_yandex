@@ -9,7 +9,7 @@ class MainMenuView(arcade.View):
         super().__init__()
 
     def on_show_view(self):
-        arcade.set_background_color(arcade.csscolor.SKY_BLUE)
+        arcade.set_background_color(arcade.csscolor.GREEN)
 
     def on_draw(self):
         """Отрисовка главного меню"""
@@ -34,7 +34,7 @@ class MainMenuView(arcade.View):
             best_score = 0
 
         arcade.draw_text(
-            f"Best_score: {best_score}",
+            f"Best score: {best_score}",
             10,
             620,
             arcade.color.WHITE,
