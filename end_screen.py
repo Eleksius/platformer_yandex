@@ -34,14 +34,18 @@ class EndScreen(arcade.View):
             anchor_y="center"
         )
 
-        with open("best_score.txt", "r+") as file:
-            text = file.read()
-            if text:
-                if self.points > int(text):
-                    file.seek(0)
+        try:
+            with open("best_score.txt", "r+") as file:
+                text = file.read()
+                if text:
+                    if self.points > int(text):
+                        file.seek(0)
+                        file.write(str(self.points))
+                else:
                     file.write(str(self.points))
-            else:
-                file.write(str(self.points))
+        except FileNotFoundError:
+            file = open("best_score.txt", "w")
+            file.write(str(self.points))
 
         with open("last_score.txt", "w") as file:
             file.write(str(self.points))
