@@ -41,7 +41,6 @@ class GameView(arcade.View):
         self.jump_sound = arcade.load_sound(":resources:sounds/jump1.wav")
         self.spike_sound = arcade.load_sound(":resources:sounds/gameover3.wav")
         self.end_sound = arcade.load_sound(":resources:sounds/gameover1.wav")
-        self.background = arcade.load_texture("backgrounds/bg2.png")
         self.mega_sound = arcade.load_sound(":resources:sounds/coin3.wav")
         self.music_hame = arcade.load_sound(":resources:music/1918.mp3")
 
