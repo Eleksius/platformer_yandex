@@ -43,6 +43,7 @@ class GameView(arcade.View):
         self.end_sound = arcade.load_sound(":resources:sounds/gameover1.wav")
         self.mega_sound = arcade.load_sound(":resources:sounds/coin3.wav")
         self.music_hame = arcade.load_sound(":resources:music/1918.mp3")
+        self.ach = arcade.load_sound(":resources:sounds/upgrade5.wav")
 
         if self.player_music:
             arcade.stop_sound(self.player_music)
@@ -236,6 +237,9 @@ class GameView(arcade.View):
             if len(self.scene["Coins"]) == 0:
                 self.level += 1
                 if self.level == 4:
+                    if self.hp == 5 and "full hp" not in get_achievements():
+                        add_achievement("full hp", "finish the game with full hp")
+                        arcade.play_sound(self.ach)
                     from win_screen import WinScreen
                     arcade.stop_sound(self.player_music)
                     self.window.show_view(WinScreen(self.score))
@@ -265,6 +269,9 @@ class GameView(arcade.View):
                 mega.remove_from_sprite_lists()
             self.player_sprite.center_y = 128
             self.player_sprite.center_x = 128
+            if "secret way" not in get_achievements():
+                add_achievement("secret way", "found a secret way")
+                arcade.play_sound(self.ach)
             arcade.play_sound(self.mega_sound)
 
         if super_hit_list:

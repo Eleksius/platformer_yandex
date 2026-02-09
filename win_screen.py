@@ -1,10 +1,11 @@
 import arcade
-
+from constants import get_achievements, add_achievement
 
 class WinScreen(arcade.View):
     def __init__(self, points):
         super().__init__()
         self.points = points
+        self.ach = arcade.load_sound(":resources:sounds/upgrade5.wav")
 
     def on_show_view(self):
         arcade.set_background_color(arcade.csscolor.GREEN)
@@ -12,6 +13,14 @@ class WinScreen(arcade.View):
     def on_draw(self):
         """Отрисовка главного меню"""
         self.clear()
+
+        if self.points >= 100 and "100 points" not in get_achievements():
+            add_achievement("100 points", "collect more than 100 points in one race")
+            arcade.play_sound(self.ach)
+
+        if self.points >= 116 and "points master" not in get_achievements():
+            add_achievement("points master", "collect all points in the game")
+            arcade.play_sound(self.ach)
 
         # Заголовок игры
         arcade.draw_text(

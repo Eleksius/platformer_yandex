@@ -1,3 +1,21 @@
+import json
+
+try:
+    achievements = json.load(open("achievements.json"))
+except FileNotFoundError:
+    achievements = {}
+    with open('achievements.json', 'w', encoding='utf-8') as f:
+        json.dump(achievements, f)
+
+def add_achievement(name, description):
+    achievements[name] = description
+    with open('achievements.json', 'w', encoding='utf-8') as f:
+        json.dump(achievements, f)
+
+def get_achievements():
+    return achievements
+
+
 # Разрешение экрана
 SCREEN_WIDTH = 1000
 SCREEN_HEIGHT = 650

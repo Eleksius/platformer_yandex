@@ -77,7 +77,7 @@ class MainMenuView(arcade.View):
             anchor_y="center"
         )
 
-        # Кнопка "Выйти"
+        # Кнопка "Достижения"
         arcade.draw_rectangle_outline(
             self.window.width / 2,
             self.window.height / 2 - 80,
@@ -86,9 +86,27 @@ class MainMenuView(arcade.View):
             arcade.color.WHITE
         )
         arcade.draw_text(
-            "Выйти",
+            "Достижения",
             self.window.width / 2,
             self.window.height / 2 - 80,
+            arcade.color.WHITE,
+            font_size=20,
+            anchor_x="center",
+            anchor_y="center"
+        )
+
+        # Кнопка "Выйти"
+        arcade.draw_rectangle_outline(
+            self.window.width / 2,
+            self.window.height / 2 - 160,
+            200,
+            50,
+            arcade.color.WHITE
+        )
+        arcade.draw_text(
+            "Выйти",
+            self.window.width / 2,
+            self.window.height / 2 - 160,
             arcade.color.WHITE,
             font_size=20,
             anchor_x="center",
@@ -105,9 +123,17 @@ class MainMenuView(arcade.View):
             game_view.setup()
             self.window.show_view(game_view)
 
-        # Проверяем, была ли нажата кнопка "Выйти"
+        # Проверяем, была ли нажата кнопка "Достижения"
         elif (self.window.width / 2 - 100 < x < self.window.width / 2 + 100 and
               self.window.height / 2 - 80 - 25 < y < self.window.height / 2 - 80 + 25):
+            # Переходим к экрану достижений
+            from achievements_view import AchievementsView
+            achievements_view = AchievementsView()
+            self.window.show_view(achievements_view)
+
+        # Проверяем, была ли нажата кнопка "Выйти"
+        elif (self.window.width / 2 - 100 < x < self.window.width / 2 + 100 and
+              self.window.height / 2 - 160 - 25 < y < self.window.height / 2 - 160 + 25):
             # Выходим из игры
             arcade.close_window()
 
